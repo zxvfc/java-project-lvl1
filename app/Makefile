@@ -6,3 +6,6 @@ run:
 
 update:
 	./mvnw versions:display-property-updates versions:update-properties
+
+lint:
+	./mvnw checkstyle:check
