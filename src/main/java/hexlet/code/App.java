@@ -13,6 +13,7 @@ public class App {
         int choice = sc.nextInt();
         switch (choice) {
             case 1 -> Cli.greetings();
-        };
+            default -> System.out.println("Buy!");
+        }
     }
 }
