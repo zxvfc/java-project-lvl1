@@ -1,16 +1,22 @@
 package hexlet.code;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Even {
 
+    private static final int MIN = 1;
+    private static final int MAX = 100;
     private static final int CORRECT_ANSWERS_LIMIT = 3;
 
     public static void game() {
         final String name = Cli.greetings();
         println("Answer 'yes' if number even otherwise answer 'no'.");
 
-        final int[] numbersToCheck = {0, 1, 2};
+        final int[] numbersToCheck = new Random()
+                .ints(MIN, MAX)
+                .limit(CORRECT_ANSWERS_LIMIT)
+                .toArray();
 
         int correctAnswers = 0;
         for (int number : numbersToCheck) {
