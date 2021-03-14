@@ -6,9 +6,9 @@ public abstract class Game {
 
     private static final int MAX = 100;
 
-    public abstract String getQuestion();
+    public abstract String getDescription();
 
-    public abstract String getCorrectAnswer();
+    public abstract GameData generateData();
 
     final int getRandomNumber() {
         return new Random().nextInt(MAX);

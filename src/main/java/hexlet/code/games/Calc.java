@@ -4,34 +4,31 @@ public final class Calc extends Game {
 
     private static final char[] OPERATIONS = {'+', '-', '*'};
 
-    private final String question;
-    private final String correctAnswer;
-
-    public Calc() {
-        final int firstNumber = getRandomNumber();
-        final int secondNumber = getRandomNumber();
-        final int operationIndex = getRandomNumber() % OPERATIONS.length;
-        final char operation = OPERATIONS[operationIndex];
-
-        question = "%s %c %s".formatted(firstNumber,
-                                        operation,
-                                        secondNumber
-        );
-        correctAnswer = correctAnswerFor(firstNumber, operation, secondNumber);
-    }
-
-    public static String getDescription() {
+    @Override
+    public String getDescription() {
         return "What is the result of the expression?";
     }
 
     @Override
-    public String getQuestion() {
-        return question;
+    public GameData generateData() {
+        final int firstNumber = getRandomNumber();
+        final int secondNumber = getRandomNumber();
+        final char operation = getOperation();
+
+        final String question = "%s %c %s".formatted(firstNumber,
+                                                     operation,
+                                                     secondNumber
+        );
+        final String answer = correctAnswerFor(firstNumber,
+                                               operation,
+                                               secondNumber);
+
+        return new GameData(question, answer);
     }
 
-    @Override
-    public String getCorrectAnswer() {
-        return correctAnswer;
+    private char getOperation() {
+        final int operationIndex = getRandomNumber() % OPERATIONS.length;
+        return OPERATIONS[operationIndex];
     }
 
     private String correctAnswerFor(final int firstNumber,
