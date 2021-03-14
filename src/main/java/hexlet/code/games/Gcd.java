@@ -18,11 +18,11 @@ public final class Gcd extends Game {
         return "Find the greatest common divisor of given numbers.";
     }
 
-    int gcd(final int n1, final int n2) {
-        if (n2 == 0) {
-            return n1;
+    private int gcd(final int firstNumber, final int secondNumber) {
+        if (secondNumber == 0) {
+            return firstNumber;
         }
-        return gcd(n2, n1 % n2);
+        return gcd(secondNumber, firstNumber % secondNumber);
     }
 
     @Override
