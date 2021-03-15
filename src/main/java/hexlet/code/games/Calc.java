@@ -2,7 +2,11 @@ package hexlet.code.games;
 
 public final class Calc extends Game {
 
-    private static final char[] OPERATIONS = {'+', '-', '*'};
+    private static final char PLUS = '+';
+    private static final char MINUS = '-';
+    private static final char MULTIPLY = '*';
+
+    private static final char[] OPERATIONS = {PLUS, MINUS, MULTIPLY};
 
     @Override
     public String getDescription() {
@@ -44,9 +48,9 @@ public final class Calc extends Game {
                          final char operation,
                          final int secondNumber) {
         return switch (operation) {
-            case '+' -> firstNumber + secondNumber;
-            case '-' -> firstNumber - secondNumber;
-            case '*' -> firstNumber * secondNumber;
+            case PLUS -> firstNumber + secondNumber;
+            case MINUS -> firstNumber - secondNumber;
+            case MULTIPLY -> firstNumber * secondNumber;
             default -> throw new IllegalStateException(
                     "Unexpected value: " + operation
             );

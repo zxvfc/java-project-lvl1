@@ -12,10 +12,15 @@ public final class Gcd extends Game {
         final int firstNumber = getRandomNumber();
         final int secondNumber = getRandomNumber();
 
-        return new GameData(
-                firstNumber + " " + secondNumber,
-                String.valueOf(gcd(firstNumber, secondNumber))
-        );
+        final String question = firstNumber + " " + secondNumber;
+        final String answer = getCorrectAnswer(firstNumber, secondNumber);
+
+        return new GameData(question, answer);
+    }
+
+    private String getCorrectAnswer(final int firstNumber,
+                                    final int secondNumber) {
+        return String.valueOf(gcd(firstNumber, secondNumber));
     }
 
     private int gcd(final int firstNumber, final int secondNumber) {
