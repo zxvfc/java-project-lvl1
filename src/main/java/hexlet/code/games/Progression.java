@@ -38,7 +38,7 @@ public final class Progression extends Game {
         final int step = getRandomNumber() % MAX_STEP + MIN_STEP;
         final int length = getRandomNumber() % MAX_LENGTH + MIN_LENGTH;
 
-        return IntStream.iterate(baseNumber, n -> n + step)
+        return IntStream.iterate(baseNumber, number -> number + step)
                         .limit(length)
                         .mapToObj(String::valueOf)
                         .collect(Collectors.toList());
