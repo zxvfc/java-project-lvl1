@@ -1,11 +1,11 @@
-build:
-	./mvnw clean package
+install:
+	./gradlew clean install
 
-run:
-	java -jar ./target/app-1.0-SNAPSHOT-jar-with-dependencies.jar
+run-dist:
+	./build/install/app/bin/app
 
-update:
-	./mvnw versions:display-property-updates versions:update-properties
-
+check-updates:
+	./gradlew dependencyUpdates
+	
 lint:
-	./mvnw checkstyle:check
+	./gradlew checkstyleMain checkstyleTest
