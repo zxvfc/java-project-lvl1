@@ -1,21 +1,27 @@
 package hexlet.code.games;
 
-public final class Even extends Game {
+import hexlet.code.Engine;
 
-    @Override
-    public String getDescription() {
-        return "Answer 'yes' if number even otherwise answer 'no'.";
+import static hexlet.code.Engine.ROUNDS;
+import static hexlet.code.Utils.MAX;
+import static hexlet.code.Utils.generateRandom;
+
+public final class Even {
+
+    private static final String DESCRIPTION = "Answer 'yes' if number even otherwise answer 'no'.";
+
+    public static void run() {
+        final String[] questions = new String[ROUNDS];
+        final String[] answers = new String[ROUNDS];
+        for (int i = 0; i < ROUNDS; i++) {
+            final int number = generateRandom(MAX);
+            questions[i] = String.valueOf(number);
+            answers[i] = isEven(number) ? "yes" : "no";
+        }
+        Engine.runGame(DESCRIPTION, new String[][]{questions, answers});
     }
 
-    @Override
-    public GameData generateData() {
-        final int number = getRandomNumber();
-        final String question = String.valueOf(number);
-        final String correctAnswer = correctAnswerFor(number);
-        return new GameData(question, correctAnswer);
-    }
-
-    private static String correctAnswerFor(final int number) {
-        return (number % 2 == 0) ? "yes" : "no";
+    private static boolean isEven(final int number) {
+        return number % 2 == 0;
     }
 }

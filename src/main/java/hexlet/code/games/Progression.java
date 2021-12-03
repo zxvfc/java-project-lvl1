@@ -1,10 +1,14 @@
 package hexlet.code.games;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import hexlet.code.Engine;
+import hexlet.code.Utils;
 import java.util.stream.IntStream;
 
-public final class Progression extends Game {
+import static hexlet.code.Engine.ROUNDS;
+
+public final class Progression {
+
+    private static final String DESCRIPTION = "What number is missing in the progression?";
 
     private static final int MIN_STEP = 1;
     private static final int MAX_STEP = 5;
@@ -15,32 +19,39 @@ public final class Progression extends Game {
     private static final String HIDE_SYMBOL = "..";
     private static final String DELIMITER = " ";
 
-    @Override
-    public String getDescription() {
-        return "What number is missing in the progression?";
+    public static void run() {
+
+        final String[] questions = new String[ROUNDS];
+        final String[] answers = new String[ROUNDS];
+        for (int i = 0; i < ROUNDS; i++) {
+            final int baseNumber = Utils.generateRandom(Utils.MAX);
+            final int step = Utils.generateRandom(MIN_STEP, MAX_STEP);
+            final int length = Utils.generateRandom(MIN_LENGTH, MAX_LENGTH);
+
+            final String[] sequence = buildSequence(baseNumber, step, length);
+
+            final int hiddenPosition = Utils.generateRandom(sequence.length);
+            questions[i] = buildQuestion(sequence, hiddenPosition);
+            answers[i] = sequence[hiddenPosition];
+        }
+
+        Engine.runGame(DESCRIPTION, new String[][]{questions, answers});
     }
 
-    @Override
-    public GameData generateData() {
-        final List<String> sequence = generateSequence();
-
-        final int hiddenPosition = getRandomNumber() % sequence.size();
-
-        final String answer = sequence.get(hiddenPosition);
-        sequence.set(hiddenPosition, HIDE_SYMBOL);
-        final String question = String.join(DELIMITER, sequence);
-
-        return new GameData(question, answer);
-    }
-
-    private List<String> generateSequence() {
-        final int baseNumber = getRandomNumber();
-        final int step = getRandomNumber() % MAX_STEP + MIN_STEP;
-        final int length = getRandomNumber() % MAX_LENGTH + MIN_LENGTH;
-
+    private static String[] buildSequence(final int baseNumber, final int step, final int length) {
         return IntStream.iterate(baseNumber, number -> number + step)
-                        .limit(length)
-                        .mapToObj(String::valueOf)
-                        .collect(Collectors.toList());
+                .limit(length)
+                .mapToObj(String::valueOf)
+                .toArray(String[]::new);
     }
+
+    private static String buildQuestion(final String[] sequence, final int hiddenPosition) {
+        final StringBuilder result = new StringBuilder();
+        for (int i = 0; i < sequence.length; i++) {
+            result.append(i == hiddenPosition ? HIDE_SYMBOL : sequence[i])
+                    .append(DELIMITER);
+        }
+        return result.toString();
+    }
+
 }

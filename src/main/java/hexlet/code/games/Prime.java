@@ -1,28 +1,31 @@
 package hexlet.code.games;
 
-public final class Prime extends Game {
+import hexlet.code.Engine;
+import hexlet.code.Utils;
+
+import static hexlet.code.Engine.ROUNDS;
+
+public final class Prime {
 
     private static final int MIN_PRIME = 2;
+    private static final String DESCRIPTION = "Answer 'yes' if given number is prime. Otherwise answer 'no'.";
 
-    @Override
-    public String getDescription() {
-        return "Answer 'yes' if given number is prime. Otherwise answer 'no'.";
+    public static void run() {
+        final String[] questions = new String[ROUNDS];
+        final String[] answers = new String[ROUNDS];
+        for (int i = 0; i < ROUNDS; i++) {
+            final int number = Utils.generateRandom(Utils.MAX);
+            questions[i] = String.valueOf(number);
+            answers[i] = isPrime(number) ? "yes" : "no";
+        }
+        Engine.runGame(DESCRIPTION, new String[][]{questions, answers});
     }
 
-    @Override
-    public GameData generateData() {
-        final int number = getRandomNumber();
-
-        final String question = String.valueOf(number);
-        final String answer = isPrime(number) ? "yes" : "no";
-        return new GameData(question, answer);
-    }
-
-    private boolean isPrime(final int number) {
+    private static boolean isPrime(final int number) {
         if (number < MIN_PRIME) {
             return false;
         }
-        for (int i = 2; i < number / 2; i++) {
+        for (int i = MIN_PRIME; i < number / 2; i++) {
             if (number % i == 0) {
                 return false;
             }

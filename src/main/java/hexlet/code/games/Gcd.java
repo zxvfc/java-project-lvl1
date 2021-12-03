@@ -1,32 +1,31 @@
 package hexlet.code.games;
 
-public final class Gcd extends Game {
+import hexlet.code.Engine;
+import hexlet.code.Utils;
 
-    @Override
-    public String getDescription() {
-        return "Find the greatest common divisor of given numbers.";
+import static hexlet.code.Engine.ROUNDS;
+
+public final class Gcd {
+
+    private static final String DESCRIPTION = "Find the greatest common divisor of given numbers.";
+
+    public static void run() {
+        final String[] questions = new String[ROUNDS];
+        final String[] answers = new String[ROUNDS];
+        for (int i = 0; i < ROUNDS; i++) {
+            final int firstNumber = Utils.generateRandom(Utils.MAX);
+            final int secondNumber = Utils.generateRandom(Utils.MAX);
+
+            questions[i] = firstNumber + " " + secondNumber;
+            answers[i] = String.valueOf(findGcd(firstNumber, secondNumber));
+        }
+        Engine.runGame(DESCRIPTION, new String[][]{questions, answers});
     }
 
-    @Override
-    public GameData generateData() {
-        final int firstNumber = getRandomNumber();
-        final int secondNumber = getRandomNumber();
-
-        final String question = firstNumber + " " + secondNumber;
-        final String answer = getCorrectAnswer(firstNumber, secondNumber);
-
-        return new GameData(question, answer);
-    }
-
-    private String getCorrectAnswer(final int firstNumber,
-                                    final int secondNumber) {
-        return String.valueOf(gcd(firstNumber, secondNumber));
-    }
-
-    private int gcd(final int firstNumber, final int secondNumber) {
+    private static int findGcd(final int firstNumber, final int secondNumber) {
         if (secondNumber == 0) {
             return firstNumber;
         }
-        return gcd(secondNumber, firstNumber % secondNumber);
+        return findGcd(secondNumber, firstNumber % secondNumber);
     }
 }

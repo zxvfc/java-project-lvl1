@@ -1,59 +1,46 @@
 package hexlet.code.games;
 
-public final class Calc extends Game {
+import hexlet.code.Engine;
+import hexlet.code.Utils;
+import java.util.Map;
+import java.util.function.IntBinaryOperator;
 
-    private static final char PLUS = '+';
-    private static final char MINUS = '-';
-    private static final char MULTIPLY = '*';
+import static hexlet.code.Engine.ROUNDS;
 
-    private static final char[] OPERATIONS = {PLUS, MINUS, MULTIPLY};
+public final class Calc {
 
-    @Override
-    public String getDescription() {
-        return "What is the result of the expression?";
+    private static final String DESCRIPTION = "What is the result of the expression?";
+
+    private static final Map<String, IntBinaryOperator> OPERATIONS = Map.of(
+            "+", Math::addExact,
+            "-", Math::subtractExact,
+            "*", Math::multiplyExact
+    );
+
+    public static void run() {
+        final String[] questions = new String[ROUNDS];
+        final String[] answers = new String[ROUNDS];
+        for (int i = 0; i < ROUNDS; i++) {
+            final int firstNumber = Utils.generateRandom(Utils.MAX);
+            final int secondNumber = Utils.generateRandom(Utils.MAX);
+            final var operation = getRandomOperation();
+
+            questions[i] = firstNumber + " " + operation.getKey() + " " + secondNumber;
+            answers[i] = buildAnswer(firstNumber, operation.getValue(), secondNumber);
+        }
+
+        Engine.runGame(DESCRIPTION, new String[][]{questions, answers});
     }
 
-    @Override
-    public GameData generateData() {
-        final int firstNumber = getRandomNumber();
-        final int secondNumber = getRandomNumber();
-        final char operation = getOperation();
-
-        final String question = "%s %c %s".formatted(firstNumber,
-                                                     operation,
-                                                     secondNumber
-        );
-        final String answer = correctAnswerFor(firstNumber,
-                                               operation,
-                                               secondNumber);
-
-        return new GameData(question, answer);
+    private static Map.Entry<String, IntBinaryOperator> getRandomOperation() {
+        final int operationIndex = Utils.generateRandom(OPERATIONS.size() - 1);
+        return OPERATIONS.entrySet().stream().toList().get(operationIndex);
     }
 
-    private char getOperation() {
-        final int operationIndex = getRandomNumber() % OPERATIONS.length;
-        return OPERATIONS[operationIndex];
-    }
+    private static String buildAnswer(final int firstNumber,
+                                   final IntBinaryOperator operation,
+                                   final int secondNumber) {
 
-    private String correctAnswerFor(final int firstNumber,
-                                    final char operation,
-                                    final int secondNumber) {
-        return String.valueOf(evaluate(firstNumber,
-                                       operation,
-                                       secondNumber
-        ));
-    }
-
-    private int evaluate(final int firstNumber,
-                         final char operation,
-                         final int secondNumber) {
-        return switch (operation) {
-            case PLUS -> firstNumber + secondNumber;
-            case MINUS -> firstNumber - secondNumber;
-            case MULTIPLY -> firstNumber * secondNumber;
-            default -> throw new IllegalStateException(
-                    "Unexpected value: " + operation
-            );
-        };
+        return String.valueOf(operation.applyAsInt(firstNumber, secondNumber));
     }
 }

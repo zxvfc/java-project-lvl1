@@ -36,11 +36,11 @@ public class App {
 
         switch (choice) {
             case GREETINGS -> Cli.greetings();
-            case EVEN -> Engine.runGame(new Even());
-            case CALC -> Engine.runGame(new Calc());
-            case GCD -> Engine.runGame(new Gcd());
-            case PROGRESSION -> Engine.runGame(new Progression());
-            case PRIME -> Engine.runGame(new Prime());
+            case EVEN -> Even.run();
+            case CALC -> Calc.run();
+            case GCD -> Gcd.run();
+            case PROGRESSION -> Progression.run();
+            case PRIME -> Prime.run();
             default -> {
             }
         }

@@ -1,29 +1,34 @@
 package hexlet.code;
 
-import hexlet.code.games.Game;
-import hexlet.code.games.GameData;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Engine {
 
-    private static final int ROUNDS_TO_WIN = 3;
+    public static final int ROUNDS = 3;
+    private static final String FAILED_MESSAGE_TEMPLATE = """
+                '%s' is wrong answer ;(. Correct answer was '%s'.
+                Let's try again, %s!
+                """;
 
-    public static void runGame(final Game game) {
-        final String name = Cli.greetings();
-        System.out.println(game.getDescription());
+    public static void runGame(final String gameDescription, final String[][] questionsToAnswers) {
+        System.out.print("May I have your name? ");
+        final String name = new Scanner(System.in).nextLine();
+        System.out.println("Hello, " + name + "!");
 
-        for (int round = 0; round < ROUNDS_TO_WIN; round++) {
+        System.out.println(gameDescription);
 
-            final GameData gameData = game.generateData();
+        for (final String[] questionToAnswer : questionsToAnswers) {
 
-            System.out.println("Question: " + gameData.getQuestion());
-            final String correctAnswer = gameData.getCorrectAnswer();
+            final String question = questionToAnswer[0];
+            System.out.println("Question: " + question);
 
             System.out.print("Your answer: ");
             final String userAnswer = new Scanner(System.in).nextLine();
 
-            if (!isAnsweredCorrect(userAnswer, correctAnswer)) {
-                printFailedMessages(name, userAnswer, correctAnswer);
+            final String correctAnswer = questionToAnswer[1];
+            if (!Objects.equals(userAnswer, correctAnswer)) {
+                System.out.printf((FAILED_MESSAGE_TEMPLATE) + "%n", name, userAnswer, correctAnswer);
                 return;
             }
 
@@ -33,19 +38,4 @@ public class Engine {
         System.out.println("Congratulations, " + name + "!");
     }
 
-    private static boolean isAnsweredCorrect(final String userAnswer,
-                                             final String correctAnswer) {
-        return correctAnswer.equalsIgnoreCase(userAnswer);
-    }
-
-    private static void printFailedMessages(final String name,
-                                            final String userAnswer,
-                                            final String correctAnswer) {
-        final String message = """
-                '%s' is wrong answer ;(. Correct answer was '%s'.
-                Let's try again, %s!
-                """.formatted(userAnswer, correctAnswer, name);
-
-        System.out.println(message);
-    }
 }
