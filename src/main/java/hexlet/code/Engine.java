@@ -28,7 +28,7 @@ public class Engine {
 
             final String correctAnswer = questionToAnswer[1];
             if (!Objects.equals(userAnswer, correctAnswer)) {
-                System.out.printf((FAILED_MESSAGE_TEMPLATE) + "%n", name, userAnswer, correctAnswer);
+                System.out.printf((FAILED_MESSAGE_TEMPLATE) + "%n", userAnswer, correctAnswer, userAnswer);
                 return;
             }
 
