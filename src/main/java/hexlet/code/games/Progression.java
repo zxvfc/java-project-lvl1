@@ -20,9 +20,7 @@ public final class Progression {
     private static final String DELIMITER = " ";
 
     public static void run() {
-
-        final String[] questions = new String[ROUNDS];
-        final String[] answers = new String[ROUNDS];
+        final String[][] questionsToAnswers = new String[ROUNDS][];
         for (int i = 0; i < ROUNDS; i++) {
             final int baseNumber = Utils.generateRandom(Utils.MAX);
             final int step = Utils.generateRandom(MIN_STEP, MAX_STEP);
@@ -31,11 +29,13 @@ public final class Progression {
             final String[] sequence = buildSequence(baseNumber, step, length);
 
             final int hiddenPosition = Utils.generateRandom(sequence.length);
-            questions[i] = buildQuestion(sequence, hiddenPosition);
-            answers[i] = sequence[hiddenPosition];
+            final String question = buildQuestion(sequence, hiddenPosition);
+            final String answer = sequence[hiddenPosition];
+
+            questionsToAnswers[i] = new String[]{question, answer};
         }
 
-        Engine.runGame(DESCRIPTION, new String[][]{questions, answers});
+        Engine.runGame(DESCRIPTION, questionsToAnswers);
     }
 
     private static String[] buildSequence(final int baseNumber, final int step, final int length) {

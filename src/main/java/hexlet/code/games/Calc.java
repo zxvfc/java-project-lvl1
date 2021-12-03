@@ -18,18 +18,18 @@ public final class Calc {
     );
 
     public static void run() {
-        final String[] questions = new String[ROUNDS];
-        final String[] answers = new String[ROUNDS];
+        final String[][] questionsToAnswers = new String[ROUNDS][];
         for (int i = 0; i < ROUNDS; i++) {
             final int firstNumber = Utils.generateRandom(Utils.MAX);
             final int secondNumber = Utils.generateRandom(Utils.MAX);
             final var operation = getRandomOperation();
 
-            questions[i] = firstNumber + " " + operation.getKey() + " " + secondNumber;
-            answers[i] = buildAnswer(firstNumber, operation.getValue(), secondNumber);
+            final String question = firstNumber + " " + operation.getKey() + " " + secondNumber;
+            final String answer = buildAnswer(firstNumber, operation.getValue(), secondNumber);
+            questionsToAnswers[i] = new String[]{question, answer};
         }
 
-        Engine.runGame(DESCRIPTION, new String[][]{questions, answers});
+        Engine.runGame(DESCRIPTION, questionsToAnswers);
     }
 
     private static Map.Entry<String, IntBinaryOperator> getRandomOperation() {
